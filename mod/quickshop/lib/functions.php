@@ -119,13 +119,32 @@ function quickshop_is_subcategory($container, $category) {
 }
 
 /**
+ *	Determines if a given category is valid
+ * @param type $category
+ * @return boolean
+ */
+function quickshop_is_valid_category($category) {
+  if (!$category || !elgg_instanceof($category, 'object', 'product_category')) {
+	return false;
+  }
+
+  $group = quickshop_get_group_by_category($category);
+	  
+  if (!$group || !elgg_instanceof($group, 'group')) {
+	return false;
+  }
+  
+  return true;
+}
+
+/**
  * determines if a given category is valid and can be edited by the logged in user
  * 
  * @param type $category
  * @return boolean
  */
 function quickshop_is_valid_editable_category($category) {
-  if (!$category || !$category->canEdit() || !elgg_instanceof($category, 'object', 'product_category')) {
+  if (!quickshop_is_valid_category($category)) {
 	return false;
   }
 

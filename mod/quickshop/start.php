@@ -15,7 +15,8 @@ function quickshop_init() {
   // extend views
   elgg_extend_view('css/elgg', 'quickshop/css');
   elgg_extend_view('js/elgg', 'quickshop/js');
-  elgg_extend_view('page/elements/sidebar', 'product_category/tree');
+  elgg_extend_view('page/elements/sidebar', 'groups/sidebar/search', 500);
+  elgg_extend_view('page/elements/sidebar', 'product_category/tree', 501);
   
   elgg_register_library('elgg:groups', elgg_get_plugins_path() . 'quickshop/lib/groups.php');
   
@@ -28,6 +29,9 @@ function quickshop_init() {
   
   // replace group owner_block links
   elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'quickshop_group_owner_block', 1000);
+  
+  // remove extras menu
+  elgg_register_plugin_hook_handler('register', 'menu:extras', 'quickshop_extras_menu', 1000);
   
   // give groups nicer urls based on metadata
   elgg_register_entity_url_handler('group', 'all', 'quickshop_group_url');
@@ -88,7 +92,7 @@ function quickshop_product_category_page_handler($page) {
 	  // we're viewing a category
 	default:
 	  $category = get_entity($page[0]);
-	  if (!quickshop_is_valid_editable_category($category)) {
+	  if (!quickshop_is_valid_category($category)) {
 		return false;
 	  }
 	  $group = quickshop_get_group_by_category($category);

@@ -18,6 +18,7 @@ $english = array(
 	// Edit product category
 	'quickshop:category:add' => "Add Category",
 	'quickshop:category:edit' => "Edit Category: %s",
+	'quickshop:product_categories:title' => "Product Categories",
 	'quickshop:product_category:label:title' => "Category Name",
 	'quickshop:product_category:top_level' => "Top Level Category",
 	'quickshop:product_category:error:invalid' => "Invalid category",

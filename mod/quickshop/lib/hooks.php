@@ -1,5 +1,10 @@
 <?php
 
+function quickshop_extras_menu($hook, $type, $return, $params) {
+  return array();
+}
+
+
 /**
  *	Handle some custom URLs in the 'groups' pagehandler
  * 

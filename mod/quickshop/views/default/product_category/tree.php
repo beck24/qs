@@ -10,7 +10,14 @@ if (!elgg_instanceof($group, 'group')) {
 }
 
 if (!$category) {
+  // we're at the top level
   $category = $group;
+  $count = quickshop_get_alpha_categories($category, array('count' => true));
+  
+  if ($count) {
+	// we have stuff to show
+	echo '<h3>' . elgg_echo('quickshop:product_categories:title') . '</h3>';
+  }
 }
 
 // get subcategories
