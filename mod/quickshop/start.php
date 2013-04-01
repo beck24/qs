@@ -115,7 +115,20 @@ function quickshop_product_category_page_handler($page) {
  * @param type $page
  */
 function quickshop_product_page_handler($page) {
-  
+  switch ($page[0]) {
+	
+	// add a new product
+	case 'add':
+	  $group = get_entity($page[1]);
+	  if (!$group || !$group->canEdit() || !elgg_instanceof($group, 'group')) {
+		return false;
+	  }
+	  elgg_set_page_owner_guid($group->guid);
+	  if (include dirname(__FILE__) . '/pages/product/add.php') {
+		return true;
+	  }
+	  break;
+  }
 }
 
 // gives groups easy to remember urls

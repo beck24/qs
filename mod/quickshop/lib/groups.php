@@ -464,6 +464,9 @@ function groups_register_profile_buttons($group) {
 		//$actions[$url] = 'groups:invite';
 		$url = elgg_get_site_url() . "groups/category/add/{$group->getGUID()}";
 		$actions[$url] = 'quickshop:product_category:add';
+		
+		$url = elgg_get_site_url() . "groups/product/add/{$group->getGUID()}";
+		$actions[$url] = 'quickshop:product:add';
 	}
 
 	// group members
@@ -479,7 +482,7 @@ function groups_register_profile_buttons($group) {
 		$url = elgg_get_site_url() . "action/groups/join?group_guid={$group->getGUID()}";
 		$url = elgg_add_action_tokens_to_url($url);
 		if ($group->isPublicMembership() || $group->canEdit()) {
-			$actions[$url] = 'groups:join';
+			//$actions[$url] = 'groups:join';
 		} else {
 			// request membership
 			$actions[$url] = 'groups:joinrequest';

@@ -30,7 +30,21 @@ $english = array(
 	
 	'quickshop:category:title' => "Category: %s",
 	'quickshop:product_category:no_results' => "No products were found in this category",
-
+	
+	// Products
+	'quickshop:product:add' => "Add Product",
+	'quickshop:product:fieldset:general_info' => "About the Product",
+	'quickshop:product:general_info:helptext' => "Set the basic information for your product",
+	'quickshop:product:label:title' => "Product Name",
+	'quickshop:product:label:description' => "Product Description",
+	'quickshop:product:label:tags' => "Keywords (comma separated)",
+	'quickshop:product:fieldset:images' => "Images",
+	'quickshop:product:images:helptext' => "Upload and manage images of the product",
+	'quickshop:product:label:images' => "Upload Image",
+	'quickshop:product:fieldset:shipping' => "Shipping",
+	'quickshop:product:shipping:helptext' => "Set item shipping values or download options",
+	'quickshop:product:fieldset:pricing' => "Pricing",
+	'quickshop:product:pricing:helptext' => "Set the list price, sale price, etc.",
 );
 
 add_translation('en', $english);

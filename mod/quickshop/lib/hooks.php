@@ -54,7 +54,12 @@ function quickshop_groups_router($hook, $type, $return, $params) {
   
   if ($return['segments'][0] == 'product') {
 	array_shift($return['segments']);
-	return quickshop_product_page_handler($return['segments']);
+	if (quickshop_product_page_handler($return['segments'])) {
+	  return true;
+	}
+	
+	// something's not right
+	forward('', '404');
   }
 }
 
