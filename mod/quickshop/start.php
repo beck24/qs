@@ -45,6 +45,8 @@ function quickshop_init() {
   // register actions
   $action_path = elgg_get_plugins_path() . 'quickshop/actions';
   elgg_register_action('product_category/edit', "$action_path/product_category/edit.php");
+  elgg_register_action('product_category/delete', "$action_path/product_category/delete.php");
+  elgg_register_action('product/edit', "$action_path/product/edit.php");
   
   // auto-load some assets
   elgg_load_js('lightbox');
@@ -74,6 +76,21 @@ function quickshop_product_category_page_handler($page) {
 	  }
 	  break;
 	  
+	  
+	//  
+	// All Products category
+	case 'all':
+	  $group = get_entity($page[1]);
+	  if (!$group || !elgg_instanceof($group, 'group')) {
+		return false;
+	  }
+	  elgg_set_page_owner_guid($group->guid);
+	  if (include dirname(__FILE__) . '/pages/category/all.php') {
+		return true;
+	  }
+	  break;
+	  
+	
 	//
 	// edit an existing category
 	case 'edit':

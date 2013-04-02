@@ -8,7 +8,7 @@ elgg_push_breadcrumb(elgg_echo('edit'));
 
 $title = elgg_echo('quickshop:category:edit', array($category->title));
 
-$content = elgg_view_form('product_category/edit', array(), array(
+$content = elgg_view_form('product_category/edit', array('enctype' => 'multipart/form-data'), array(
 	'group' => elgg_get_page_owner_entity(),
 	'category' => $category
 ));

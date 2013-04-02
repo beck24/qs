@@ -39,3 +39,8 @@ ul.product_categories_menu ul.product_categories_menu {
   color: red;
   font-size: 20px;
 }
+
+.elgg-form-product-edit input[type="text"] {
+  display: inline-block;
+  width: 350px;
+}

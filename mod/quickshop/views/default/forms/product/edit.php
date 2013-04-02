@@ -4,6 +4,7 @@
    */
 
   $product = $vars['entity'];
+  $group = elgg_get_page_owner_entity();
   $dropdown = '<span class="elgg-icon elgg-icon-hover-menu"></span>';
 ?>
 
@@ -26,7 +27,7 @@
 	<?php
 	  //
 	  //  TITLE
-	  $value = elgg_get_sticky_value('quickshop_product', 'title');
+	  $value = elgg_get_sticky_value('product/edit', 'title');
 	  if (!$value) {
 		$value = $product ? $product->title : '';
 	  }
@@ -39,7 +40,7 @@
 	  
 	  //
 	  // DESCRIPTION
-	  $value = elgg_get_sticky_value('quickshop_product', 'description');
+	  $value = elgg_get_sticky_value('product/edit', 'description');
 	  if (!$value) {
 		$value = $product ? $product->description : '';
 	  }
@@ -52,13 +53,13 @@
 	  
 	  //
 	  //  TAGS
-	  $value = elgg_get_sticky_value('quickshop_product', 'tags');
+	  $value = elgg_get_sticky_value('product/edit', 'tags');
 	  if (!$value) {
 		$value = $product ? $product->tags : '';
 	  }
 	  echo '<label>' . elgg_echo('quickshop:product:label:tags') . '</label>';
 	  echo elgg_view('input/text', array(
-		  'name' => 'title',
+		  'name' => 'tags',
 		  'value' => $value
 	  ));
 	  
@@ -121,9 +122,17 @@
   ));
 ?>
   <div class="quickshop-product-pricing quickshop-toggle-target hidden">
-	Pricing stuff
-  
   <?php
+	$value = elgg_get_sticky_value('product/edit', 'sell_price');
+	if (!$value) {
+	  $value = $product ? $product->sell_price : '';
+	}
+	echo '<label class="required">' . elgg_echo('quickshop:product:pricing:price') . '</label>';
+	echo '$' . elgg_view('input/text', array(
+		'name' => 'sell_price',
+		'value' => $value,
+	));
+  
 	echo '<br><br>';
 	  echo elgg_view('output/url', array(
 		 'text' => elgg_echo('next'),
@@ -167,6 +176,12 @@
 <?php 
   // a view for other plugins to extend to add to the form
   echo elgg_view('quickshop/product/extension');
+  
+  if ($product) {
+	echo elgg_view('input/hidden', array('name' => 'guid', 'value' => $product->guid));
+  }
 
+  echo elgg_view('input/hidden', array('name' => 'container_guid', 'value' => $group->guid));
   echo elgg_view('input/submit', array('value' => elgg_echo('submit')));
-?>
+
+  elgg_clear_sticky_form('product/edit');

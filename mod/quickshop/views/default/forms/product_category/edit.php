@@ -55,10 +55,18 @@ $submit_input = elgg_view('input/submit', array(
 
 // category input
 $category_input = '';
+$delete_input = '';
 if ($category) {
   $category_input = elgg_view('input/hidden', array(
 	 'name' => 'guid',
 	  'value' => $category->guid
+  ));
+  
+  $delete_input = elgg_view('output/confirmlink', array(
+	 'text' => elgg_echo('delete'),
+	  'href' => elgg_get_site_url() . 'action/product_category/delete?guid=' . $category->guid,
+	  'confirm' => elgg_echo('quickshop:category:delete:confirm'),
+	  'class' => 'elgg-button elgg-button-delete float-alt'
   ));
 }
 ?>
@@ -73,5 +81,9 @@ echo $parent_label;
 echo $parent_input;
 
 echo $category_input;
+
+if ($category) {
+  echo $delete_input;
+}
 
 echo $submit_input;

@@ -28,6 +28,14 @@ function quickshop_categories_breadcrumbs($category) {
   }
 }
 
+
+function quickshop_format_monetary_value($value) {
+  $money = preg_replace('~[^0-9|^.|(?=2.)]~', '', $value);
+  $money = number_format($money,2);
+  
+  return $money;
+}
+
 /**
  * convenience function for getting categories within a container ordered alphabetically
  * 
