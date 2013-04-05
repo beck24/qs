@@ -1,21 +1,15 @@
 <?php
 
-$category_guid = get_input('category_guid');
-$category = get_entity($category_guid);
+$product_guid = get_input('product_guid');
+$product = get_entity($product_guid);
+$group = $product->getContainerEntity();
 
-quickshop_categories_breadcrumbs($category);
-elgg_push_breadcrumb($category->title);
+elgg_push_breadcrumb($group->name, $group->getURL());
+elgg_push_breadcrumb($product->title);
 
-$title = elgg_echo('quickshop:category:title', array($category->title));
+$title = $product->title;
 
-$content = quickshop_list_alpha_category_products($category);
-
-if (!$content) {
-  $content .= elgg_echo('quickshop:product_category:no_results');
-}
-else {
-  $content .= $products;
-}
+$content = elgg_view_entity($product);
 
 $layout = elgg_view_layout('one_sidebar', array(
 	'title' => elgg_view_title($title),

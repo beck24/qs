@@ -36,6 +36,7 @@ $english = array(
 	
 	// Products
 	'quickshop:product:add' => "Add Product",
+	'quickshop:product:edit' => "Edit Product",
 	'groups/product:add' => "Add Product",
 	'quickshop:product:fieldset:general_info' => "About the Product",
 	'quickshop:product:general_info:helptext' => "Set the basic information for your product",

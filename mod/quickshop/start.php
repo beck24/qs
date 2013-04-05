@@ -33,9 +33,13 @@ function quickshop_init() {
   // remove extras menu
   elgg_register_plugin_hook_handler('register', 'menu:extras', 'quickshop_extras_menu', 1000);
   
+  // product entity menu
+  elgg_register_plugin_hook_handler('register', 'menu:entity', 'quickshop_product_entity_menu');
+  
   // give groups nicer urls based on metadata
   elgg_register_entity_url_handler('group', 'all', 'quickshop_group_url');
   elgg_register_entity_url_handler('object', 'product_category', 'quickshop_product_category_url');
+  elgg_register_entity_url_handler('object', 'product', 'quickshop_product_url');
   
   // save our identifier to groups
   elgg_register_event_handler('update', 'group', 'quickshop_group_identifier');
@@ -145,7 +149,40 @@ function quickshop_product_page_handler($page) {
 		return true;
 	  }
 	  break;
+	  
+	case 'edit':
+	  $product = get_entity($page[1]);
+	  if (!$product || !$product->canEdit() || !elgg_instanceof($product, 'object', 'product')) {
+		return false;
+	  }
+	  $group = $product->getContainerEntity();
+	  elgg_set_page_owner_guid($group->guid);
+	  set_input('product_guid', $page[1]);
+	  if (include dirname(__FILE__) . '/pages/product/edit.php') {
+		return true;
+	  }
+	  break;
+	
+	default:
+	  // we're viewing a product
+	  $product = get_entity($page[0]);
+	  if (!$product || !elgg_instanceof($product, 'object', 'product')) {
+		return false;
+	  }
+	  $group = $product->getContainerEntity();
+	  if (!$group || !elgg_instanceof($group, 'group')) {
+		return false;
+	  }
+	  
+	  elgg_set_page_owner_guid($group->guid);
+	  set_input('product_guid', $page[0]);
+	  if (include dirname(__FILE__) . '/pages/product/view.php') {
+		return true;
+	  }
+	  break;
   }
+  
+  return false;
 }
 
 // gives groups easy to remember urls
@@ -158,6 +195,10 @@ function quickshop_group_url($group) {
   return elgg_get_site_url() . "groups/profile/{$group->guid}/" . elgg_get_friendly_title($group->name);
 }
 
+// 
+function quickshop_product_url($product) {
+  return elgg_get_site_url() . "groups/product/{$product->guid}/" . elgg_get_friendly_title($product->title);
+}
 
 // category urls
 function quickshop_product_category_url($category) {

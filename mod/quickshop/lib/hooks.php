@@ -102,6 +102,21 @@ function quickshop_validate_identifier($hook, $type, $return, $params) {
 }
 
 
+function quickshop_product_entity_menu($hook, $type, $return, $params) {
+  if (!elgg_instanceof($params['entity'], 'object', 'product')) {
+	return $return;
+  }
+  
+  foreach ($return as $key => $item) {
+	if ($item->getName() == 'edit') {
+	  $return[$key]->setHref("groups/product/edit/{$params['entity']->guid}");
+	}
+  }
+  
+  return $return;
+}
+
+
 function quickshop_group_owner_block($hook, $type, $return, $params) {
   if (elgg_instanceof($params['entity'], 'group')) {
 	return array();

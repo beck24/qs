@@ -13,9 +13,6 @@ $content = quickshop_list_alpha_category_products($category);
 if (!$content) {
   $content .= elgg_echo('quickshop:product_category:no_results');
 }
-else {
-  $content .= $products;
-}
 
 $layout = elgg_view_layout('one_sidebar', array(
 	'title' => elgg_view_title($title),

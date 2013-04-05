@@ -15,7 +15,11 @@ $description = elgg_view('output/longtext', array(
 	'class' => 'elgg-subtext'
 ));
 
-$entity_menu = elgg_view_menu('entity', array('entity' => $product, 'handler' => 'product'));
+$entity_menu = elgg_view_menu('entity', array(
+	'entity' => $product,
+	'handler' => 'product',
+	'class' => 'elgg-menu-hz',
+));
 
 
 $body = elgg_view_image_block($icon, $link . $entity_menu . $description);
