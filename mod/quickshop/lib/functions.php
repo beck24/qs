@@ -6,26 +6,7 @@
  * @param type $category
  */
 function quickshop_categories_breadcrumbs($category) {
-  // get all parent categories up to the group
-  $group = quickshop_get_group_by_category($category);
   
-  elgg_push_breadcrumb($group->name, $group->getURL());
-  
-  $parents = array();
-  while ($parent = get_entity($category->container_guid)) {
-	if ($parent->guid == $group->guid) {
-	  break;
-	}
-	
-	$parents[] = $parent;
-	$category = $parent;
-  }
-  
-  $parents = array_reverse($parents);
-  
-  foreach ($parents as $parent) {
-	elgg_push_breadcrumb($parent->title, $parent->getURL());
-  }
 }
 
 
@@ -84,25 +65,6 @@ function quickshop_list_alpha_category_products($container, $options = array()) 
   return elgg_list_entities_from_relationship($options);
 }
 
-/**
- *	gets the top level group for a given category
- * @param type $category
- * @return boolean
- */
-function quickshop_get_group_by_category($category) {
-  while ($parent = $category->getContainerEntity()) {
-	if (elgg_instanceof($parent, 'group')) {
-	  return $parent;
-	}
-	
-	if (elgg_instanceof($parent, 'object', 'product_category')) {
-	  $category = $parent;
-	}
-	else {
-	  return false;
-	}
-  }
-}
 
 /**
  * Determines if the subcategory is actually a subcategory of the container
@@ -136,7 +98,7 @@ function quickshop_is_valid_category($category) {
 	return false;
   }
 
-  $group = quickshop_get_group_by_category($category);
+  $group = $category->getGroup();
 	  
   if (!$group || !elgg_instanceof($group, 'group')) {
 	return false;
@@ -156,7 +118,7 @@ function quickshop_is_valid_editable_category($category) {
 	return false;
   }
 
-  $group = quickshop_get_group_by_category($category);
+  $group = $category->getGroup();
 	  
   if (!$group || !$group->canEdit() || !elgg_instanceof($group, 'group')) {
 	return false;
@@ -198,4 +160,34 @@ function quickshop_product_category_options_values($container, $options = array(
   }
   
   return $options;
+}
+
+
+function quickshop_get_cart($group) {
+    
+    $cart = get_entity($_SESSION['qscart'][$group->guid]);
+    
+    if (elgg_instanceof($cart, 'object', 'qscart')) {
+        return $cart;
+    }
+    
+    if (elgg_is_logged_in()) {
+        // see if we have an old cart that hasn't been paid
+        $carts = elgg_get_entities_from_metadata(array(
+            'type' => 'object',
+            'subtype' => 'qscart',
+            'owner_guid' => elgg_get_logged_in_user_guid(),
+            'metadata_name_value_pairs' => array(
+                'names' => array('status'),
+                'values' => array('initialized')
+            ),
+            'limit' => 1
+        ));
+        
+        if ($carts) {
+            return $carts[0];
+        }
+    }
+    
+    return false;
 }

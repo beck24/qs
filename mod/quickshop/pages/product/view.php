@@ -9,7 +9,9 @@ elgg_push_breadcrumb($product->title);
 
 $title = $product->title;
 
-$content = elgg_view_entity($product);
+$content = elgg_view_entity($product, array(
+    'full_view' => true
+));
 
 $layout = elgg_view_layout('one_sidebar', array(
 	'title' => elgg_view_title($title),

@@ -7,6 +7,8 @@ elgg.quickshop.init = function() {
   elgg.quickshop.product_fieldset();
   
   elgg.quickshop.fieldset_next();
+  
+  elgg.quickshop.category_checkboxes();
 }
 
 /*
@@ -49,6 +51,27 @@ elgg.quickshop.fieldset_next = function() {
 	$('.quickshop-toggle-target').slideUp();
 	target.slideToggle();
   });
+}
+
+
+elgg.quickshop.category_checkboxes = function() {
+    $('.product-category-checkbox input[type="checkbox"]').live('click', function() {
+        var checkbox = $(this);
+        if (checkbox.is(':checked')) {
+            // check all parents
+            checkbox.parents('.product-category-checkbox li').each(function() {
+                $(this).find('input[type="checkbox"]').eq(0).attr('checked','checked');
+            });
+        }
+        else {
+            // uncheck all children
+            var parent = checkbox.parents('.product-category-checkbox').eq(0);
+            
+            parent.find('input[type="checkbox"]').each(function() {
+                $(this).removeAttr('checked');
+            });
+        }
+    });
 }
 
 elgg.register_hook_handler('init','system', elgg.quickshop.init);

@@ -27,8 +27,7 @@ if ($category && ($container_guid == $guid || quickshop_is_subcategory($category
 
 if (!$category) {
   $action = 'add';
-  $category = new ElggObject();
-  $category->subtype = 'product_category';
+  $category = new QScategory();
   $category->owner_guid = elgg_get_logged_in_user_guid();
   $category->access_id = ACCESS_PUBLIC;
   $category->description = '';

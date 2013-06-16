@@ -1,7 +1,4 @@
 <?php
-  /**
-   * Todo: categories
-   */
 
   $product = $vars['entity'];
   $group = elgg_get_page_owner_entity();
@@ -62,6 +59,11 @@
 		  'name' => 'tags',
 		  'value' => $value
 	  ));
+      
+      //
+      // Taxonomy
+      echo '<label>' . elgg_echo('quickshop:product:label:categories') . '</label>';
+      echo elgg_view('product_category/checkbox', array('container' => $group, 'product' => $product));
 	  
 	  echo '<br><br>';
 	  echo elgg_view('output/url', array(

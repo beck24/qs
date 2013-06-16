@@ -11,12 +11,14 @@ $title = elgg_echo('quickshop:category:title', array($category->title));
 $content = quickshop_list_alpha_category_products($category);
 
 if (!$content) {
-  $content .= elgg_echo('quickshop:product_category:no_results');
+  $content = elgg_echo('quickshop:product_category:no_results');
 }
+
+$body = '<div class="qs-product-list-wrapper">' . $content . '</div>';
 
 $layout = elgg_view_layout('one_sidebar', array(
 	'title' => elgg_view_title($title),
-	'content' => $content,
+	'content' => $body,
 ));
 
 echo elgg_view_page($title, $layout);

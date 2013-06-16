@@ -11,6 +11,16 @@ require_once dirname(__FILE__) . '/lib/functions.php';
 
 // register everything we need
 function quickshop_init() {
+    
+    //register our classes
+    elgg_register_library('QSproduct', dirname(__FILE__) . '/classes/QSproduct.php');
+    elgg_register_library('QScategory', dirname(__FILE__) . '/classes/QScategory.php');
+    elgg_register_library('QScart', dirname(__FILE__) . '/classes/QScart.php');
+    
+    //load them all
+    elgg_load_library('QSproduct');
+    elgg_load_library('QScategory');
+    elgg_load_library('QScart');
   
   // extend views
   elgg_extend_view('css/elgg', 'quickshop/css');
@@ -36,21 +46,27 @@ function quickshop_init() {
   // product entity menu
   elgg_register_plugin_hook_handler('register', 'menu:entity', 'quickshop_product_entity_menu');
   
+  // group admin menu
+  elgg_register_plugin_hook_handler('register', 'menu:group_admin', 'quickshop_group_admin_menu');
+  
   // give groups nicer urls based on metadata
   elgg_register_entity_url_handler('group', 'all', 'quickshop_group_url');
-  elgg_register_entity_url_handler('object', 'product_category', 'quickshop_product_category_url');
-  elgg_register_entity_url_handler('object', 'product', 'quickshop_product_url');
   
   // save our identifier to groups
   elgg_register_event_handler('update', 'group', 'quickshop_group_identifier');
   elgg_register_event_handler('create', 'group', 'quickshop_group_identifier');
   
+  // handle our cart assignments
+  elgg_register_event_handler('login', 'user', 'quickshop_user_login');
   
   // register actions
   $action_path = elgg_get_plugins_path() . 'quickshop/actions';
   elgg_register_action('product_category/edit', "$action_path/product_category/edit.php");
   elgg_register_action('product_category/delete', "$action_path/product_category/delete.php");
   elgg_register_action('product/edit', "$action_path/product/edit.php");
+  elgg_register_action('addtocart', "$action_path/product/addtocart.php", 'public');
+  elgg_register_action('removefromcart', "$action_path/product/removefromcart.php", 'public');
+  elgg_register_action('cart/update', "$action_path/product/cartupdate.php", 'public');
   
   // auto-load some assets
   elgg_load_js('lightbox');
@@ -67,19 +83,7 @@ function quickshop_init() {
 function quickshop_product_category_page_handler($page) {
   
   switch ($page[0]) {
-	//
-	// add a new category
-	case 'add':
-	  $group = get_entity($page[1]);
-	  if (!$group || !$group->canEdit() || !elgg_instanceof($group, 'group')) {
-		return false;
-	  }
-	  elgg_set_page_owner_guid($group->guid);
-	  if (include dirname(__FILE__) . '/pages/category/add.php') {
-		return true;
-	  }
-	  break;
-	  
+	
 	  
 	//  
 	// All Products category
@@ -94,29 +98,13 @@ function quickshop_product_category_page_handler($page) {
 	  }
 	  break;
 	  
-	
-	//
-	// edit an existing category
-	case 'edit':
-	  $category = get_entity($page[1]);
-	  if (!quickshop_is_valid_editable_category($category)) {
-		return false;
-	  }
-	  $group = quickshop_get_group_by_category($category);
-	  set_input('category_guid', $category->guid);
-	  elgg_set_page_owner_guid($group->guid);
-	  if (include dirname(__FILE__) . '/pages/category/edit.php') {
-		return true;
-	  }
-	  break;
-	  
 	  // we're viewing a category
 	default:
 	  $category = get_entity($page[0]);
 	  if (!quickshop_is_valid_category($category)) {
 		return false;
 	  }
-	  $group = quickshop_get_group_by_category($category);
+	  $group = $category->getGroup();
 	  set_input('category_guid', $category->guid);
 	  elgg_set_page_owner_guid($group->guid);
 	  
@@ -137,31 +125,6 @@ function quickshop_product_category_page_handler($page) {
  */
 function quickshop_product_page_handler($page) {
   switch ($page[0]) {
-	
-	// add a new product
-	case 'add':
-	  $group = get_entity($page[1]);
-	  if (!$group || !$group->canEdit() || !elgg_instanceof($group, 'group')) {
-		return false;
-	  }
-	  elgg_set_page_owner_guid($group->guid);
-	  if (include dirname(__FILE__) . '/pages/product/add.php') {
-		return true;
-	  }
-	  break;
-	  
-	case 'edit':
-	  $product = get_entity($page[1]);
-	  if (!$product || !$product->canEdit() || !elgg_instanceof($product, 'object', 'product')) {
-		return false;
-	  }
-	  $group = $product->getContainerEntity();
-	  elgg_set_page_owner_guid($group->guid);
-	  set_input('product_guid', $page[1]);
-	  if (include dirname(__FILE__) . '/pages/product/edit.php') {
-		return true;
-	  }
-	  break;
 	
 	default:
 	  // we're viewing a product
@@ -185,6 +148,34 @@ function quickshop_product_page_handler($page) {
   return false;
 }
 
+
+function quickshop_cart_page_handler() {
+    $group = elgg_get_page_owner_entity();
+    elgg_push_breadcrumb($group->name, $group->getURL());
+    elgg_push_breadcrumb(elgg_echo('qs:view:cart'));
+    
+    $cart = quickshop_get_cart($group);
+    
+    if ($cart) {
+        $content = elgg_view_entity($cart, array(
+            'full_view' => true
+        ));
+    }
+    else {
+        $content = elgg_echo('qs:cart:empty');
+    }
+    
+    $title = elgg_echo('qs:view:cart');
+    
+    $layout = elgg_view_layout('content', array(
+        'title' => $title,
+        'content' => $content,
+        'filter' => false
+    ));
+    
+    echo elgg_view_page($title, $layout);
+}
+
 // gives groups easy to remember urls
 function quickshop_group_url($group) {
   
@@ -193,16 +184,6 @@ function quickshop_group_url($group) {
   }
   
   return elgg_get_site_url() . "groups/profile/{$group->guid}/" . elgg_get_friendly_title($group->name);
-}
-
-// 
-function quickshop_product_url($product) {
-  return elgg_get_site_url() . "groups/product/{$product->guid}/" . elgg_get_friendly_title($product->title);
-}
-
-// category urls
-function quickshop_product_category_url($category) {
-  return elgg_get_site_url() . "groups/category/{$category->guid}/" . elgg_get_friendly_title($category->title);
 }
 
 // call our init

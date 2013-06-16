@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * Group edit form
  * 
@@ -86,6 +86,18 @@ if (elgg_get_plugin_setting('hidden_groups', 'groups') == 'yes') {
 		ACCESS_PUBLIC => elgg_echo("PUBLIC")
 	);
 ?>
+
+<div>
+    <label>
+        <?php echo elgg_echo('qs:theme'); ?><br />
+        <?php echo elgg_view('input/dropdown', array(
+            'name' => 'theme',
+            'value' => $vars['entity']->theme,
+            'options_values' => elgg_trigger_plugin_hook('qs:themes', 'options_values', array(), array())
+        ));
+        ?>
+    </label>
+</div>
 
 <div>
 	<label>

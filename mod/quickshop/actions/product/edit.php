@@ -7,6 +7,7 @@ $description = get_input('description');
 $tags = get_input('tags');
 $container_guid = get_input('container_guid');
 $access_id = get_input('access_id', ACCESS_PUBLIC);
+$categories = get_input('product_category', array());
 
 $product = get_entity($guid);
 
@@ -30,8 +31,7 @@ if ($product && !elgg_instanceof($product, 'object', 'product')) {
 }
 
 if (!$product) {
-  $product = new ElggObject();
-  $product->subtype = 'product';
+  $product = new QSproduct();
   $product->owner_guid = elgg_get_logged_in_user_guid();
   $product->container_guid = $container_guid;
 }
@@ -48,5 +48,14 @@ if (!$product->save()) {
 // save metadata
 $product->sell_price = $sell_price;
 
+// sort out categories
+// first remove any previously existing categories
+remove_entity_relationships($product->guid, QUICKSHOP_CATEGORY_RELATIONSHIP);
+
+// add in the new categories
+foreach ($categories as $cat_id) {
+    add_entity_relationship($product->guid, QUICKSHOP_CATEGORY_RELATIONSHIP, $cat_id);
+}
+
 elgg_clear_sticky_form('product/edit');
-forward(REFERER);
+forward($product->getURL());

@@ -56,6 +56,29 @@ $english = array(
 	'quickshop:product:error:invalid:product' => "Invalid product",
 	'quickshop:product:error:save' => "There was a problem saving the product",
 	'quickshop:product:noresults' => "No products available",
+    'quickshop:group:admin' => "Store Admin",
+    'quickshop:view:orders' => "View Orders",
+    'quickshop:product:label:categories' => "Categories",
+    
+    //
+    'qs:theme' => 'Theme',
+    'qs:add:to:cart' => 'Add to Cart',
+    'qs:invalid:guid' => "Invalid ID",
+    'qs:cart:item:added' => "Product has been added to your cart",
+    'qs:cart:item:exists' => "In Cart: Checkout now!",
+    'qs:view:cart' => "View Cart",
+    'qs:view:cart:help' => "Check over your order.  When you are ready to proceed, continue to checkout",
+    'qs:proceed:to:checkout' => "Proceed to checkout",
+    'qs:cart:no:products' => "There are no products in your shopping cart",
+    'qs:cart:update' => "Update Cart",
+    'qs:qty' => "qty",
+    'qs:remove:empty:cart' => "Your cart has no more items, please continue shopping",
+    'qs:quantity:numeric' => "Quantities must be a numeric value",
+    
+    
+    // ADMIN
+    'qs:admin:landing' => "Administration: here you can control the behavior of your store.  Use the links to the right to access various settings.",
+    'qs:admin:edit' => "Edit Store",
 	
 );
 

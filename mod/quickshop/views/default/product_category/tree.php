@@ -15,12 +15,12 @@ if (!$category) {
   $category = $group;
   $all_products = elgg_view('output/url', array(
 	 'text' => elgg_echo('quickshop:category:allproducts'),
-	  'href' => elgg_get_site_url() . 'groups/category/all/' . $group->guid,
+	  'href' => elgg_get_site_url() . "groups/{$group->identifier}/category/all/" . $group->guid,
 	  'is_trusted' => true
   ));
   $add_new = elgg_view('output/url', array(
 	 'text' => elgg_echo('quickshop:category:add'),
-	  'href' => elgg_get_site_url() . 'quickshop/store/category/add/' . $group->guid,
+	  'href' => elgg_get_site_url() . "groups/{$group->identifier}/admin/category/add",
 	  'class' => 'elgg-button elgg-button-action'
   ));
   
@@ -49,7 +49,7 @@ if ($subcategories) {
 	  $edittext = '<span class="elgg-icon elgg-icon-settings-alt quickshop-category-edit"></span>';
 	  $edit = elgg_view('output/url', array(
 		 'text' => $edittext,
-		  'href' => elgg_get_site_url() . 'groups/category/edit/' . $subcategory->guid,
+		  'href' => elgg_get_site_url() . "groups/{$group->identifier}/admin/category/edit?guid=" . $subcategory->guid,
 	  ));
 	}
 	

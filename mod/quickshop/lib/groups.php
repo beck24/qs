@@ -3,6 +3,31 @@
  * Groups function library
  */
 
+function groups_handle_admin_page($guid, $view) {
+    $group = get_entity($guid);
+    
+    groups_register_profile_buttons($group);
+    
+    $title = elgg_echo('quickshop:group:admin');
+    $render = 'groups/admin/'.$view;
+    if (elgg_view_exists($render)) {
+        $content = elgg_view($render, array('entity' => $group));
+    }
+    else {
+        $content = elgg_echo('qs:admin:landing');
+    }
+    
+    $params = array(
+        'title' => elgg_echo('qs:admin:title:'.$view),
+		'content' => $content,
+		'sidebar' => elgg_view_menu('group_admin', array('entity' => $group)),
+        'filter' => false
+	);
+	$body = elgg_view_layout('content', $params);
+
+	echo elgg_view_page($title, $body);
+}
+
 /**
  * List all groups
  */
@@ -458,15 +483,18 @@ function groups_register_profile_buttons($group) {
 	// group owners
 	if ($group->canEdit()) {
 		// edit and invite
-		$url = elgg_get_site_url() . "groups/edit/{$group->getGUID()}";
-		$actions[$url] = 'groups:edit';
+		//$url = elgg_get_site_url() . "groups/{$group->identifier}/edit/{$group->getGUID()}";
+		//$actions[$url] = 'groups:edit';
 		//$url = elgg_get_site_url() . "groups/invite/{$group->getGUID()}";
 		//$actions[$url] = 'groups:invite';
-		$url = elgg_get_site_url() . "groups/category/add/{$group->getGUID()}";
-		$actions[$url] = 'quickshop:product_category:add';
+		//$url = elgg_get_site_url() . "groups/{$group->identifier}/category/add/{$group->getGUID()}";
+		//$actions[$url] = 'quickshop:product_category:add';
 		
-		$url = elgg_get_site_url() . "groups/product/add/{$group->getGUID()}";
-		$actions[$url] = 'quickshop:product:add';
+		//$url = elgg_get_site_url() . "groups/{$group->identifier}/product/add/{$group->getGUID()}";
+		//$actions[$url] = 'quickshop:product:add';
+        
+        $url = elgg_get_site_url() . "groups/{$group->identifier}/admin";
+        $actions[$url] = 'quickshop:group:admin';
 	}
 
 	// group members

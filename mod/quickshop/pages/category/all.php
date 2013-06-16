@@ -25,9 +25,11 @@ if (!$content) {
   $content = elgg_echo('quickshop:product:noresults');
 }
 
+$body = '<div class="qs-product-list-wrapper">' . $content . '</div>';
+
 $layout = elgg_view_layout('content', array(
 	'title' => elgg_view_title($title),
-	'content' => $content,
+	'content' => $body,
 	'filter' => ''
 ));
 
