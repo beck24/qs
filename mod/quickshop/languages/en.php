@@ -7,6 +7,11 @@ $english = array(
 	  Use alpha-numeric characters, hyphens/underscores, no spaces or special characters.  You cannot use an identifier that is already in use by another store.",
 	'quickshop:groups:tags' => 'Keywords (comma separated)',
 	'quickshop:groups:tags:helptext' => "Enter a comma separated list of words that describe your store and the type of products you sell",
+    'quickshop:subtotal' => "Subtotal",
+    'quickshop:total' => "Total",
+    'qs:admin:title:' => "Store Administration",
+    'quickshop:manage:taxes' => "Manage Taxes",
+    'qs:admin:title:taxes' => "Manage Taxes",
 	
 	// groups
 	'groups:access:group' => 'Nobody (Hidden)',
@@ -79,6 +84,10 @@ $english = array(
     // ADMIN
     'qs:admin:landing' => "Administration: here you can control the behavior of your store.  Use the links to the right to access various settings.",
     'qs:admin:edit' => "Edit Store",
+    
+    // Taxes
+    'qs:admin:taxes:add' => "Add Tax",
+    'qs:admin:title:taxes/add' => "Add Tax",
 	
 );
 

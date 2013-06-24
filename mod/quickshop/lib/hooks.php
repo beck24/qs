@@ -199,6 +199,16 @@ function quickshop_group_admin_menu($hook, $type, $return, $params) {
             );
     
     $return[] = $view_orders;
+    
+    
+    // manage taxes
+    $manage_taxes = new ElggMenuItem(
+            'qs:manage:taxes',
+            elgg_echo('quickshop:manage:taxes'),
+            elgg_get_site_url() . "groups/{$group->identifier}/admin/taxes"
+            );
+            
+    $return[] = $manage_taxes;
             
     return $return;
 }

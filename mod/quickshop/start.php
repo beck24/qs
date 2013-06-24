@@ -2,6 +2,7 @@
 
 // define our constants
 define(QUICKSHOP_CATEGORY_RELATIONSHIP, 'quickshop_in_category');
+define(QUICKSHOP_TAX_RELATIONSHIP, 'quickshop_is_taxed');
 
 // load our hooks
 require_once dirname(__FILE__) . '/lib/hooks.php';
@@ -16,11 +17,13 @@ function quickshop_init() {
     elgg_register_library('QSproduct', dirname(__FILE__) . '/classes/QSproduct.php');
     elgg_register_library('QScategory', dirname(__FILE__) . '/classes/QScategory.php');
     elgg_register_library('QScart', dirname(__FILE__) . '/classes/QScart.php');
+    elgg_register_library('QStax', dirname(__FILE__) . '/classes/QStax.php');
     
     //load them all
     elgg_load_library('QSproduct');
     elgg_load_library('QScategory');
     elgg_load_library('QScart');
+    elgg_load_library('QStax');
   
   // extend views
   elgg_extend_view('css/elgg', 'quickshop/css');
@@ -60,13 +63,14 @@ function quickshop_init() {
   elgg_register_event_handler('login', 'user', 'quickshop_user_login');
   
   // register actions
-  $action_path = elgg_get_plugins_path() . 'quickshop/actions';
+  $action_path = dirname(__FILE__) . '/actions';
   elgg_register_action('product_category/edit', "$action_path/product_category/edit.php");
   elgg_register_action('product_category/delete', "$action_path/product_category/delete.php");
   elgg_register_action('product/edit', "$action_path/product/edit.php");
   elgg_register_action('addtocart', "$action_path/product/addtocart.php", 'public');
   elgg_register_action('removefromcart', "$action_path/product/removefromcart.php", 'public');
   elgg_register_action('cart/update', "$action_path/product/cartupdate.php", 'public');
+  elgg_register_action('qstax/edit', "$action_path/qstax/edit");
   
   // auto-load some assets
   elgg_load_js('lightbox');
@@ -184,6 +188,19 @@ function quickshop_group_url($group) {
   }
   
   return elgg_get_site_url() . "groups/profile/{$group->guid}/" . elgg_get_friendly_title($group->name);
+}
+
+function quickshop_get_group_taxes($group) {
+    if (!elgg_instanceof($group, 'group')) {
+        return array();
+    }
+    
+    return elgg_get_entities(array(
+        'type' => 'object',
+        'subtype' => 'qstax',
+        'container_guid' => $group->guid,
+        'limit' => 0
+    ));
 }
 
 // call our init

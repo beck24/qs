@@ -7,6 +7,7 @@ function groups_handle_admin_page($guid, $view) {
     $group = get_entity($guid);
     
     groups_register_profile_buttons($group);
+    elgg_push_breadcrumb(elgg_echo('quickshop:group:admin'), $group->getURL() . '/admin');
     
     $title = elgg_echo('quickshop:group:admin');
     $render = 'groups/admin/'.$view;

@@ -16,7 +16,11 @@ foreach ($products as $product) {
         ));
 }
 
-echo elgg_view('object/qscart/subtotal', $vars);
+echo elgg_view('object/qscart/subtotal', array('cart' => $cart));
+
+echo elgg_view('object/qscart/tax', array('cart' => $cart));
+
+echo elgg_view('object/qscart/total', array('cart' => $cart));
 
 echo '<div class="elgg-foot">';
 echo elgg_view('input/hidden', array('name' => 'guid', 'value' => $cart->container_guid));

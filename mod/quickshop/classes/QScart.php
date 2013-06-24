@@ -58,4 +58,66 @@ class QScart extends ElggObject {
             'is_trusted' => true
         ));
     }
+    
+    public function getSubtotal() {
+        $items = $this->getItems();
+        
+        $subtotal = 0;
+        foreach ($items as $product) {
+            $subtotal += $product->sell_price;
+        }
+        
+        return elgg_trigger_plugin_hook('qscart', 'subtotal', array('cart' => $this), $subtotal);
+    }
+    
+    public function getTax() {
+        $return = array();
+        $group = $this->getGroup();
+        $products = $this->getItems();
+        
+        $taxes = quickshop_get_group_taxes($group);
+        
+        foreach ($taxes as $tax) {
+            // iterate through the products and see if tax applies to this product
+            $return[$tax->description] = 0;
+            
+            foreach ($products as $product) {
+                if ($product->isTaxable($tax)) {
+                    // calculate tax
+                    $return[$tax->description] += ($product->sell_price * ($tax->percent/100));
+                }
+            }
+        }
+        
+        foreach ($return as $description => $value) {
+            $return[$description] = quickshop_format_monetary_value($value);
+        }
+        
+        $params = array(
+            'cart' => $this,
+            'group' => $group
+        );
+        
+        return elgg_trigger_plugin_hook('qscart', 'tax', $params, $return);
+    }
+    
+    
+    public function getTaxTotal() {
+        $taxes = $this->getTax();
+        $total = 0;
+        
+        foreach ($taxes as $description => $subtotal) {
+            $total += $subtotal;
+        }
+        
+        return quickshop_format_monetary_value($total);
+    }
+    
+    
+    public function getTotal() {
+        $total = $this->getSubtotal();
+        $total += $this->getTaxTotal();
+        
+        return $total;
+    }
 }

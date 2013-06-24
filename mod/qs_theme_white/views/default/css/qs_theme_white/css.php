@@ -60,7 +60,7 @@ ul.product-category-checkbox ul {
 }
 
 .elgg-form-cart-update .qs-cart-listing-price {
-    float: left;
+    float: right;
     margin-left: 10px;
     width: 100px;
 }
@@ -84,4 +84,14 @@ ul.product-category-checkbox ul {
     float: right;
     width: 20px;
     text-align: right;
+}
+
+.elgg-form-cart-update .qs-cart-line-item {
+    float: left;
+    width: 480px;
+}
+
+.elgg-form-cart-update .qs-cart-line-item-value {
+    float: right;
+    width: 100px;
 }
