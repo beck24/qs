@@ -82,4 +82,19 @@ class QStax extends ElggObject {
         
         return elgg_trigger_plugin_hook('qstax', 'percent', $params, $tax);
     }
+    
+    public function displayRate() {
+        $group = $this->getGroup();
+        switch ($this->taxtype) {
+            case 'flat':
+                $prefix = quickshop_get_group_money_symbol($group);
+                return $prefix . $this->rate;
+                break;
+            
+            default:
+                $suffix = '%';
+                return $this->rate . $suffix;
+                break;
+        }
+    }
 }

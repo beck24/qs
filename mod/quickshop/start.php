@@ -70,7 +70,8 @@ function quickshop_init() {
   elgg_register_action('addtocart', "$action_path/product/addtocart.php", 'public');
   elgg_register_action('removefromcart', "$action_path/product/removefromcart.php", 'public');
   elgg_register_action('cart/update', "$action_path/product/cartupdate.php", 'public');
-  elgg_register_action('qstax/edit', "$action_path/qstax/edit");
+  elgg_register_action('qstax/edit', "$action_path/qstax/edit.php");
+  elgg_register_action('qstax/delete', "$action_path/qstax/delete.php");
   
   // auto-load some assets
   elgg_load_js('lightbox');
@@ -201,6 +202,14 @@ function quickshop_get_group_taxes($group) {
         'container_guid' => $group->guid,
         'limit' => 0
     ));
+}
+
+function quickshop_get_group_money_symbol($group) {
+    if ($group->money_symbol) {
+        return htmlentities($group->money_symbol);
+    }
+    
+    return htmlentities('$');
 }
 
 // call our init

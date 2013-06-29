@@ -11,4 +11,23 @@ elgg_register_menu_item('title', array(
 				'link_class' => 'elgg-button elgg-button-action',
 			));
 
-echo elgg_view_form("qstax/edit", array(), array('entity' => $group));
+
+$options = array(
+    'type' => 'object',
+    'subtype' => 'qstax',
+    'container_guid' => $group->guid,
+    'limit' => 15,
+    'pagination' => true,
+    'count' => true
+);
+
+$count = elgg_get_entities($options);
+
+if ($count) {
+    unset($options['count']);
+    echo elgg_view('object/qstax/header');
+    echo elgg_list_entities($options);
+}
+else {
+    echo elgg_echo('qs:taxes:none');
+}

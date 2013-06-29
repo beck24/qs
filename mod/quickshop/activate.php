@@ -19,3 +19,9 @@ if (get_subtype_id('object', 'qscart')) {
 } else {
 	add_subtype('object', 'qscart', 'QScart');
 }
+
+if (get_subtype_id('object', 'qstax')) {
+	update_subtype('object', 'qstax', 'QStax');
+} else {
+	add_subtype('object', 'qstax', 'QStax');
+}

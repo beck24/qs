@@ -15,7 +15,8 @@ function groups_handle_admin_page($guid, $view) {
         $content = elgg_view($render, array('entity' => $group));
     }
     else {
-        $content = elgg_echo('qs:admin:landing');
+        $content = elgg_echo('qs:admin:landing') . '<br><br>';
+        $content .= elgg_view_menu('group_admin', array('entity' => $group));
     }
     
     $params = array(

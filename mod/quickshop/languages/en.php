@@ -12,6 +12,8 @@ $english = array(
     'qs:admin:title:' => "Store Administration",
     'quickshop:manage:taxes' => "Manage Taxes",
     'qs:admin:title:taxes' => "Manage Taxes",
+    'qs:error:generic:permissions' => 'Invalid permissions',
+    'qs:error:generic:entity:save' => "There was an issue saving to the database",
 	
 	// groups
 	'groups:access:group' => 'Nobody (Hidden)',
@@ -88,7 +90,28 @@ $english = array(
     // Taxes
     'qs:admin:taxes:add' => "Add Tax",
     'qs:admin:title:taxes/add' => "Add Tax",
-	
+    'qs:admin:title:taxes/edit' => "Edit Tax",
+    'qs:taxes:none' => 'No taxes created for this store',
+    'qs:tax:label:admin:title' => "Name",
+    'qs:tax:help:title' => 'The common name of the tax, eg. GST, or Enviro-Fee',
+    'qs:tax:label:description' => "Description",
+    'qs:tax:help:description' => "A short description to appear on orders - registration numbers if applicable eg. #123456789-RT001",
+    'qs:tax:label:taxtype' => "Type of Tax",
+    'qs:tax:help:taxtype' => "How the tax should be calculated.  eg. Flat taxes are simple static charges of a set price per applicable product.  Percentage taxes are dependent on the sale price of the product.",
+    'qs:tax:option:taxtype:flat' => "Flat tax",
+    'qs:tax:option:taxtype:percentage' => "Percentage tax",
+    'qs:tax:label:rate' => "Tax Rate",
+    'qs:tax:help:rate' => "Enter a numerical value - set amount to be added for a flat tax (eg. A bottle deposit of \$0.20 you would enter 0.20), or a percentage amount for a percentage tax (eg. for GST of 5% you should enter the value '5')",
+    'qs:tax:label:all_products' => "Apply this tax to all existing products",
+    'qs:tax:help:all_products' => "If this box is checked, this tax will be applied to all existing products.  If left unchecked no assignments for this tax will change, tax can be assigned to a product on an individual basis by editing the product.",
+	'qs:tax:label:default_tax' => "Make this tax default",
+    'qs:tax:help:default_tax' => "If checked, when creating a new product this tax will automatically be selected.  The tax can be unselected at the time of product creation/editing.  Check this box if the tax applies to the majority of products in your store.",
+    'qs:tax:error:required_fields' => "Title, Description, and Rate are required fields",
+    'qs:tax:edit:success' => "Tax information successfully saved",
+    'qs:tax:all_products:success' => "Tax has been added to all existing products",
+    'qs:tax:error:rate_numeric' => "Tax rate must be a numeric value",
+    'qs:tax:delete:error' => "There was a problem deleting the tax",
+    'qs:tax:delete:success' => "Tax successfully deleted",
 );
 
 add_translation('en', $english);
