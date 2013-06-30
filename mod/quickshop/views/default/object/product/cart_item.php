@@ -2,6 +2,7 @@
 
 $product = $vars['entity'];
 $cart = $vars['cart'];
+$group = $cart->getGroup();
 
 $icon = elgg_view_entity_icon($product, 'small');
 $title = $product->title;
@@ -13,7 +14,7 @@ $desc = elgg_view('output/longtext', array(
 $attr = 'quantity_' . $product->guid;
 $quantity = $cart->$attr ? $cart->$attr : 1;
 
-$cost = quickshop_format_monetary_value($product->sell_price * $quantity);
+$cost = quickshop_get_group_money_symbol($group) . quickshop_format_monetary_value($product->sell_price * $quantity);
 
 $qty_input = elgg_view('input/text', array(
     'name' => $attr,
@@ -40,7 +41,7 @@ $remove = elgg_view('output/url', array(
         <?php echo elgg_echo('qs:qty') . $qty_input; ?>
     </div>
     <div class="qs-cart-listing-price">
-        <?php echo $product->sell_price; ?>
+        <?php echo quickshop_get_group_money_symbol($group) . $product->sell_price; ?>
     </div>
     <div class="qs-cart-listing-total">
         <?php echo $cost; ?>

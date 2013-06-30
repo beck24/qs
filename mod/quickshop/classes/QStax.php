@@ -45,18 +45,18 @@ class QStax extends ElggObject {
         return elgg_get_entities($options);
     }
     
-    public function getTaxAmount($product) {
+    public function getTaxAmount($product, $quantity = 1) {
         if (!elgg_instanceof($product, 'object', 'product')) {
             return quickshop_format_monetary_value(0);
         }
         
         switch ($this->taxtype) {
-            case 'percent':
-                return $this->getPercentageTax($product);
+            case 'percentage':
+                return ($this->getPercentageTax($product) * $quantity);
                 break;
             
             case 'flat':
-                return $this->getFlatTax($product);
+                return ($this->getFlatTax($product) * $quantity);
                 break;
         }
         
@@ -69,7 +69,7 @@ class QStax extends ElggObject {
         }
         
         $tax = quickshop_format_monetary_value($product->sell_price * ($this->rate/100));
-        
+
         $params = array('tax' => $this, 'product' => $product);
         
         return elgg_trigger_plugin_hook('qstax', 'percent', $params, $tax);
@@ -96,5 +96,9 @@ class QStax extends ElggObject {
                 return $this->rate . $suffix;
                 break;
         }
+    }
+    
+    public function isTaxable($product) {
+        return check_entity_relationship($product->guid, QUICKSHOP_TAX_RELATIONSHIP, $this->guid);
     }
 }

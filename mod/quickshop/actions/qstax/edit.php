@@ -56,14 +56,7 @@ system_message(elgg_echo('qs:tax:edit:success'));
 if ($all_products) {
     // lets add this tax to all existing products
     set_time_limit(0);
-    $options = array(
-        'type' => 'object',
-        'subtype' => 'qstax',
-        'container_guid' => $group->guid,
-        'limit' => false
-    );
-    
-    $products = new ElggBatch('elgg_get_entities', $options);
+    $products = quickshop_get_group_products($group);
     
     foreach ($products as $product) {
         add_entity_relationship($product->guid, QUICKSHOP_TAX_RELATIONSHIP, $tax->guid);

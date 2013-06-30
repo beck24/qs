@@ -64,7 +64,8 @@ class QScart extends ElggObject {
         
         $subtotal = 0;
         foreach ($items as $product) {
-            $subtotal += $product->sell_price;
+            $quantity = $this->getQuantity($product);
+            $subtotal += $product->sell_price * $quantity;
         }
         
         return elgg_trigger_plugin_hook('qscart', 'subtotal', array('cart' => $this), $subtotal);
@@ -79,19 +80,18 @@ class QScart extends ElggObject {
         
         foreach ($taxes as $tax) {
             // iterate through the products and see if tax applies to this product
-            $return[$tax->description] = 0;
+            $return[$tax->guid] = 0;
             
             foreach ($products as $product) {
-                if ($product->isTaxable($tax)) {
+                if ($tax->isTaxable($product)) {
                     // calculate tax
-                    $return[$tax->description] += ($product->sell_price * ($tax->percent/100));
+                    $quantity = $this->getQuantity($product);
+                    $return[$tax->guid] += $tax->getTaxAmount($product, $quantity);
                 }
             }
         }
         
-        foreach ($return as $description => $value) {
-            $return[$description] = quickshop_format_monetary_value($value);
-        }
+        array_walk($return, 'quickshop_format_monetary_value');
         
         $params = array(
             'cart' => $this,
@@ -119,5 +119,10 @@ class QScart extends ElggObject {
         $total += $this->getTaxTotal();
         
         return $total;
+    }
+    
+    public function getQuantity($product) {
+        $attr = 'quantity_' . $product->guid;
+        return $this->$attr ? $this->$attr : 1;
     }
 }

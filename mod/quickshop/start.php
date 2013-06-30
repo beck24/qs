@@ -13,18 +13,6 @@ require_once dirname(__FILE__) . '/lib/functions.php';
 // register everything we need
 function quickshop_init() {
     
-    //register our classes
-    elgg_register_library('QSproduct', dirname(__FILE__) . '/classes/QSproduct.php');
-    elgg_register_library('QScategory', dirname(__FILE__) . '/classes/QScategory.php');
-    elgg_register_library('QScart', dirname(__FILE__) . '/classes/QScart.php');
-    elgg_register_library('QStax', dirname(__FILE__) . '/classes/QStax.php');
-    
-    //load them all
-    elgg_load_library('QSproduct');
-    elgg_load_library('QScategory');
-    elgg_load_library('QScart');
-    elgg_load_library('QStax');
-  
   // extend views
   elgg_extend_view('css/elgg', 'quickshop/css');
   elgg_extend_view('js/elgg', 'quickshop/js');
@@ -69,7 +57,7 @@ function quickshop_init() {
   elgg_register_action('product/edit', "$action_path/product/edit.php");
   elgg_register_action('addtocart', "$action_path/product/addtocart.php", 'public');
   elgg_register_action('removefromcart', "$action_path/product/removefromcart.php", 'public');
-  elgg_register_action('cart/update', "$action_path/product/cartupdate.php", 'public');
+  elgg_register_action('qscart/update', "$action_path/product/cartupdate.php", 'public');
   elgg_register_action('qstax/edit', "$action_path/qstax/edit.php");
   elgg_register_action('qstax/delete', "$action_path/qstax/delete.php");
   
@@ -210,6 +198,21 @@ function quickshop_get_group_money_symbol($group) {
     }
     
     return htmlentities('$');
+}
+
+function quickshop_get_group_products($group, $limit = false) {
+    if (!elgg_instanceof($group, 'group')) {
+        return array();
+    }
+    
+    $options = array(
+        'type' => 'object',
+        'subtype' => 'product',
+        'container_guid' => $group->guid,
+        'limit' => $limit
+    );
+    
+    return new ElggBatch('elgg_get_entities', $options);
 }
 
 // call our init

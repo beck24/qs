@@ -9,7 +9,7 @@ echo elgg_view('output/longtext', array(
     'class' => 'elgg-subtext'
 ));
 
-echo elgg_view_form('cart/update', array(), $vars);
+echo elgg_view_form('qscart/update', array(), $vars);
 
 
 echo '<hr>';

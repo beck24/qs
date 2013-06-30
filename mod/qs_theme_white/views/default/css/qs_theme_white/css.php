@@ -21,11 +21,11 @@ ul.product-category-checkbox ul {
 *       PRODUCT CART REVIEW
 */
 
-.elgg-form-cart-update {
+.elgg-form-qscart-update {
     width: 650px;
 }
 
-.elgg-form-cart-update .qs-cart-listing {
+.elgg-form-qscart-update .qs-cart-listing {
     width: 100%;
     margin: 0 20px;
     padding: 3px 10px;
@@ -33,65 +33,65 @@ ul.product-category-checkbox ul {
     border-top: 0;
 }
 
-.elgg-form-cart-update .qs-cart-listing div {
+.elgg-form-qscart-update .qs-cart-listing div {
     display: table-cell;
     vertical-align: middle;
     height: 50px;
 }
 
-.elgg-form-cart-update .qs-cart-listing:first-child {
+.elgg-form-qscart-update .qs-cart-listing:first-child {
     border-top: 1px;
     margin-top: 20px;
 }
 
-.elgg-form-cart-update .qs-cart-listing:last-child {
+.elgg-form-qscart-update .qs-cart-listing:last-child {
     margin-bottom: 20px;
 }
 
-.elgg-form-cart-update .qs-cart-listing-icon {
+.elgg-form-qscart-update .qs-cart-listing-icon {
     float: left;
     width: 40px;
 }
 
-.elgg-form-cart-update .qs-cart-listing-desc {
+.elgg-form-qscart-update .qs-cart-listing-desc {
     float: left;
     margin-left: 15px;
     width: 200px;
 }
 
-.elgg-form-cart-update .qs-cart-listing-price {
+.elgg-form-qscart-update .qs-cart-listing-price {
     float: right;
     margin-left: 10px;
     width: 100px;
 }
 
-.elgg-form-cart-update .qs-cart-listing-qty {
+.elgg-form-qscart-update .qs-cart-listing-qty {
     float: left;
     margin-left: 10px;
     width: 100px;
 }
 
-.elgg-form-cart-update .qs-cart-listing-qty input[type="text"] {
+.elgg-form-qscart-update .qs-cart-listing-qty input[type="text"] {
     width: 40px;
 }
 
-.elgg-form-cart-update .qs-cart-listing-qty {
+.elgg-form-qscart-update .qs-cart-listing-qty {
     float: left;
     width: 40px;
 }
 
-.elgg-form-cart-update .qs-cart-listing-actions {
+.elgg-form-qscart-update .qs-cart-listing-actions {
     float: right;
     width: 20px;
     text-align: right;
 }
 
-.elgg-form-cart-update .qs-cart-line-item {
+.elgg-form-qscart-update .qs-cart-line-item {
     float: left;
     width: 480px;
 }
 
-.elgg-form-cart-update .qs-cart-line-item-value {
+.elgg-form-qscart-update .qs-cart-line-item-value {
     float: right;
     width: 100px;
 }
